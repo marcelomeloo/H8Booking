@@ -14,7 +14,7 @@ export default function Home() {
         />
         <div className="text-center max-w-screen-sm mb-10">
           <h1 className="text-stone-200 font-bold text-2xl">
-            Next.js Prisma PostgreSQL Auth Starter
+            Next.js Prisma PostgreSQL Auth Starter Pack
           </h1>
           <p className="text-stone-400 mt-5">
             This is a{" "}
