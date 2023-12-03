@@ -6,6 +6,7 @@ import LoadingDots from "@/components/loading-dots";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function Form({ type }: { type: "login" | "register" }) {
   const [loading, setLoading] = useState(false);
@@ -13,7 +14,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
         setLoading(true);
         if (type === "login") {
@@ -32,27 +33,24 @@ export default function Form({ type }: { type: "login" | "register" }) {
             }
           });
         } else {
-          fetch("/api/auth/register", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: e.currentTarget.email.value,
-              password: e.currentTarget.password.value,
-            }),
-          }).then(async (res) => {
-            setLoading(false);
-            if (res.status === 200) {
-              toast.success("Account created! Redirecting to login...");
-              setTimeout(() => {
-                router.push("/login");
-              }, 2000);
-            } else {
-              const { error } = await res.json();
-              toast.error(error);
-            }
+          const res = await axios.post("/api/auth/register", {
+            email: e.currentTarget.email.value,
+            password: e.currentTarget.password.value,
+          }, {
+            headers: { "Content-Type": "application/json" },
+          }).catch(err => {
+            toast.error(err.response.data.error);
+            return err.response;
           });
+
+          setLoading(false);
+          if (res.status === 200) {
+            toast.success("Account created! Redirecting to login...");
+            setTimeout(() => {
+              router.refresh();
+              router.push("/login");
+            }, 2000);
+          }
         }
       }}
       className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
@@ -91,11 +89,10 @@ export default function Form({ type }: { type: "login" | "register" }) {
       </div>
       <button
         disabled={loading}
-        className={`${
-          loading
-            ? "cursor-not-allowed border-gray-200 bg-gray-100"
-            : "border-black bg-black text-white hover:bg-white hover:text-black"
-        } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
+        className={`${loading
+          ? "cursor-not-allowed border-gray-200 bg-gray-100"
+          : "border-black bg-black text-white hover:bg-white hover:text-black"
+          } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
       >
         {loading ? (
           <LoadingDots color="#808080" />
