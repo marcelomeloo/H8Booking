@@ -45,7 +45,7 @@ model Rooms {
   description    String           @map("description_rms")
   timeSlot       Int              @map("time_slot_rms")
   userRoomConfig UserRoomConfig[]
-  Reservations   Reservations[]
+  reservations   Reservations[]
 
   @@map("rooms")
 }
