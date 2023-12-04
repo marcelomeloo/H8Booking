@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const { email, password } = await req.json();
-    const exists = await prisma.user.findUnique({
+    const exists = await prisma.users.findUnique({
       where: {
         email,
       },
@@ -18,9 +18,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const user = await prisma.user.create({
+    const user = await prisma.users.create({
       data: {
+        name: "MARCEL VERSIANI",
         email,
+        role: "PROGRAMMER",
         password: await hash(password, 10),
       },
     });
