@@ -4,9 +4,9 @@ import { RESERVATION_STATUS } from "@prisma/client";
 
 export async function GET(
   req: NextRequest,
-  context: { params: { id: number } }
+  context: { params: { id: string } }
 ) {
-  const id = context.params.id;
+  const id = Number(context.params.id);
 
   if (!id) {
     return NextResponse.json(

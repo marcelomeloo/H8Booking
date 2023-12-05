@@ -15,18 +15,20 @@ export default function Home() {
         ></iframe>
         <SignOut />
         <button
-        className={`${false
-          ? "cursor-not-allowed border-gray-200 bg-gray-100"
-          : "border-black bg-black text-white hover:bg-white hover:text-black"
-          } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
+          className={`${false
+            ? "cursor-not-allowed border-gray-200 bg-gray-100"
+            : "border-black bg-black text-white hover:bg-white hover:text-black"
+            } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
           onClick={async () => {
-            const res = await axios.get("/api/rooms/")
-            console.log(res.data)
+            const res = await axios.get(`/api/users/reservations`).catch((err) => {
+              console.log(err.data);
+              throw err;
+            })
+            console.log(res.data);
           }}
         >
           <span className="font-semibold">Clique aqui</span>
-
-      </button>
+        </button>
       </div>
     </div>
   );

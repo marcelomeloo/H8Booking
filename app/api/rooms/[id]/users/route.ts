@@ -14,7 +14,7 @@ export async function GET(req: NextRequest, context: { params: { id: number; } }
     const users = await prisma?.users.findMany({
         where: {
             userRoomConfig: {
-                some: { roomId: id , allowCreateReserve: true}
+                some: { roomId: id }
             }
         }
     })
