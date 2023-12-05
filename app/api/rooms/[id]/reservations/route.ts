@@ -48,3 +48,22 @@ export async function POST(req: NextRequest, context: { params: { id: number; } 
 
     return NextResponse.json( { reservation }, { status: 200})
 }
+
+export async function PATCH(req: NextRequest, context: {params: {id: number} } ) {
+    const id = context.params.id;
+    const reservationId = req.body.id;
+
+    if(!id || !reservation_id) {
+        return NextResponse.json(
+            { message: "Internal Server Error" },
+            { status: 500 }
+        )
+    }
+
+    const reservation = await prisma.reservations.update({
+        where: { id: Number(reservationId) },
+        data: { status: status }
+    })
+
+    return NextResponse.json( { reservation }, { status: 200})
+}
