@@ -5,7 +5,7 @@ import { RESERVATION_STATUS } from "@prisma/client";
 export async function GET(
   req: NextRequest,
   context: { params: { id: string } }
-) {
+): Promise<NextResponse> {
   const id = Number(context.params.id);
 
   if (!id) {
@@ -25,10 +25,11 @@ export async function GET(
   return NextResponse.json({ reservations }, { status: 200 });
 }
 
+
 export async function POST(
   req: NextRequest,
   context: { params: { id: number } }
-) {
+): Promise<NextResponse> {
   const roomId = context.params.id;
   const body = await req.json();
 
@@ -56,10 +57,11 @@ export async function POST(
   return NextResponse.json({ reservation }, { status: 200 });
 }
 
+
 export async function PATCH(
   req: NextRequest,
   context: { params: { id: number } }
-) {
+): Promise<NextResponse> {
   const roomId = context.params.id;
   const body = await req.json();
 
