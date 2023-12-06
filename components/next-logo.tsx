@@ -12,17 +12,14 @@ export function NextLogo() {
         <circle cx="90" cy="90" r="90" fill="black" />
       </mask>
       <g mask="url(#mask0_408_134)">
-        <circle cx="90" cy="90" r="90" fill="black" />
-        <path
-          d="M149.508 157.52L69.142 54H54V125.97H66.1136V69.3836L139.999 164.845C143.333 162.614 146.509 160.165 149.508 157.52Z"
-          fill="url(#paint0_linear_408_134)"
-        />
-        <rect
-          x="115"
-          y="54"
-          width="12"
-          height="72"
-          fill="url(#paint1_linear_408_134)"
+        <circle cx="90" cy="90" r="90" fill="#247BA0" />
+        <image
+          href="/logo2.png"  
+          x="0"           
+          y="20"          
+          width="180"      
+          height="180"   
+          preserveAspectRatio="xMidYMid slice"
         />
       </g>
       <defs>

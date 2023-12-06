@@ -6,7 +6,7 @@ export default function Home() {
     <div className="flex h-screen bg-gray-50">
       <div className="w-screen h-screen flex flex-col justify-center items-center">
         <Image
-          width={512}
+          width={512}  
           height={512}
           src="/logo.png"
           alt="Platforms on Vercel"
