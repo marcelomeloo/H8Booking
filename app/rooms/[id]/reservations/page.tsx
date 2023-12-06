@@ -1,3 +1,5 @@
+"use client"
+
 import Calendar from "@/components/calendar";
 import getWeeklyReservations from "@/lib/getWeeklyReservations";
 
@@ -10,10 +12,9 @@ type WeeklyReservations = {
   roomId: number
 }
 
-export default async function RoomReservations({ params }: any) {
+export default function RoomReservations({ params }: any) {
   const id = String(params.id);
-
-  const weekReservations = await getWeeklyReservations(id, '2023-11-04T00:00:00.000Z');
-  console.log(weekReservations);
-  return (<></>);
+  // const weekReservations = await getWeeklyReservations(id, '2023-11-04T00:00:00.000Z');
+  // console.log(weekReservations);
+  return (<Calendar id={id} />);
 }
