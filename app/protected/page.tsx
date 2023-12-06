@@ -1,10 +1,12 @@
 import SignOut from "@/components/sign-out";
 import getAllRooms from "@/lib/getAllRooms";
 import getWeeklyReservations from "@/lib/getWeeklyReservations";
+import postReservation from "@/lib/postReservation";
 import axios from "axios";
 
 export default async function Home() {
-  const rooms = await getWeeklyReservations('1', '2023-11-29T00:00:00.000Z');
+  // const rooms = await postReservation('1', new Date('2023-11-29T00:00:00.000Z'), new Date('2023-11-29T01:00:00.000Z'));
+  // console.log(rooms);
   return (
     <div className="flex h-screen bg-black">
       <div className="w-screen h-screen flex flex-col space-y-5 justify-center items-center">

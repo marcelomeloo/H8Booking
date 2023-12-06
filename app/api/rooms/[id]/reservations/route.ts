@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { RESERVATION_STATUS } from "@prisma/client";
+import { getServerSession } from "next-auth";
 
 
 export async function GET(
@@ -45,36 +46,74 @@ export async function GET(
   return NextResponse.json({ reservations }, { status: 200 });
 }
 
+export type ReservationRequestBodyPOST = {
+  userId: number | null;
+  initDate: string | null;
+  endDate: string | null;
+};
 
 export async function POST(
   req: NextRequest,
-  context: { params: { id: number } }
+  context: { params: { id: string } }
 ): Promise<NextResponse> {
-  const roomId = context.params.id;
-  const body = await req.json();
+  const body: ReservationRequestBodyPOST = await req.json();
 
-  const userId = body.userId;
-  const startDate = body.startDate;
+  const userId = body?.userId;
+  const roomId = context.params.id;
+
+  if(!userId) {
+    return NextResponse.json(
+      { message: "Could not find user" },
+      { status: 400 }
+    );
+  }
+
+  const permissions = await prisma.userRoomConfig.findUnique({
+    where: { userId_roomId: { userId, roomId: parseInt(context.params.id) } },
+  });
+
+  if (!permissions?.allowCreateReserve) {
+    return NextResponse.json(
+      { message: "User does not have permissions to reserve this room" },
+      { status: 403 }
+    );
+  }
+
+  const initDate = body.initDate;
   const endDate = body.endDate;
 
-  if (!roomId || !userId || !startDate || !endDate) {
+  if (!roomId) {
     return NextResponse.json(
-      { message: "Missing important information" },
+      { message: "Missing room id" },
+      { status: 422 }
+    );
+  }
+
+  if (!initDate || !endDate) {
+    return NextResponse.json(
+      { message: "Missing startDate or endDate" },
+      { status: 422 }
+    );
+  }
+
+  if (!isISOString(initDate) || !isISOString(endDate)) {
+    return NextResponse.json(
+      { message: "Dates startDate or endDate is not a valid ISO string" },
       { status: 422 }
     );
   }
 
   const reservation = await prisma.reservations.create({
     data: {
-      roomId: parseInt(roomId.toString()),
-      userId: parseInt(userId),
+      roomId: parseInt(roomId),
+      userId,
       status: RESERVATION_STATUS.APPROVED,
-      init_time: new Date(startDate),
+      init_time: new Date(initDate),
       end_time: new Date(endDate),
     },
   });
 
-  return NextResponse.json({ reservation }, { status: 200 });
+  return NextResponse.json({ reservation }, { status: 201 });
 }
 
 
