@@ -26,6 +26,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         password: await hash(password, 10),
       },
     });
+
+    const userId = user.id;
+    const rooms = await prisma.rooms.findMany();
+
+    const userRoomConfigPromises = rooms.map((room) =>
+      prisma.userRoomConfig.create({
+        data: {
+          allowCreateReserve: false,
+          allowCancelReserve: false,
+          userId,
+          roomId: room.id,
+        },
+      })
+    );
+
+    await Promise.all(userRoomConfigPromises);
   
     return NextResponse.json(user, { status: 201 });
   } catch (error: any) {
