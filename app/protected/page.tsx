@@ -1,8 +1,10 @@
-'use client';
 import SignOut from "@/components/sign-out";
+import getAllRooms from "@/lib/getAllRooms";
+import getWeeklyReservations from "@/lib/getWeeklyReservations";
 import axios from "axios";
 
-export default function Home() {
+export default async function Home() {
+  const rooms = await getWeeklyReservations('1', '2023-11-29T00:00:00.000Z');
   return (
     <div className="flex h-screen bg-black">
       <div className="w-screen h-screen flex flex-col space-y-5 justify-center items-center">
@@ -19,13 +21,6 @@ export default function Home() {
             ? "cursor-not-allowed border-gray-200 bg-gray-100"
             : "border-black bg-black text-white hover:bg-white hover:text-black"
             } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
-          onClick={async () => {
-            const res = await axios.get(`/api/users/reservations`).catch((err) => {
-              console.log(err.data);
-              throw err;
-            })
-            console.log(res.data);
-          }}
         >
           <span className="font-semibold">Clique aqui</span>
         </button>
