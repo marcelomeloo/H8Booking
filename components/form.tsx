@@ -28,7 +28,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
               setLoading(false);
               toast.error(e.error);
             } else {
-              console.log("logando", e);
+              toast.success("Logged in! Redirecting to home...");
               router.refresh();
               router.push("/home");
             }
@@ -46,7 +46,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
           });
 
           setLoading(false);
-          if (res.status === 200) {
+          if (res.status === 201) {
             toast.success("Account created! Redirecting to login...");
             setTimeout(() => {
               router.refresh();
