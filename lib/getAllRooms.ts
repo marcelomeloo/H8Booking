@@ -1,6 +1,6 @@
 export default async function getAllRooms(email: string) {
   const res = await fetch(
-    `http://localhost:3000/api/rooms?email=${email}`
+    `${process.env.NEXTAUTH_URL}/api/rooms?email=${email}`
   ).catch((e) => {
     throw new Error(e);
   });

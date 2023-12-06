@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 export default async function createReservation(roomId: string, initDate: Date, endDate: Date) {
     const session = await getServerSession();
-    const url = `http://localhost:3000/api/rooms/${roomId}/reservations`;
+    const url = `${process.env.NEXTAUTH_URL}/api/rooms/${roomId}/reservations`;
   
     if (!session?.user?.email) {
       throw new Error('You must be logged in to create a reservation.');

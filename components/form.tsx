@@ -23,11 +23,12 @@ export default function Form({ type }: { type: "login" | "register" }) {
             email: e.currentTarget.email.value,
             password: e.currentTarget.password.value,
             // @ts-ignore
-          }).then(({ error }) => {
-            if (error) {
+          }).then((e) => {
+            if (e?.error) {
               setLoading(false);
-              toast.error(error);
+              toast.error(e.error);
             } else {
+              console.log("logando", e);
               router.refresh();
               router.push("/home");
             }

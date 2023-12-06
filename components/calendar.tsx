@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { DayPilot, DayPilotCalendar, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
 import "./calendar.css";
+import axios from 'axios';
 
 const styles = {
   wrap: {
@@ -14,8 +15,9 @@ const styles = {
   }
 };
 
-const Calendar = () => {
+const Calendar = (props: any) => {
   const calendarRef = useRef()
+  const roomId = props.id;
 
   const editEvent = async (e) => {
     const dp = calendarRef.current.control;
@@ -31,7 +33,7 @@ const Calendar = () => {
     timeRangeSelectedHandling: "Enabled",
     onTimeRangeSelected: async args => {
       const dp = calendarRef.current.control;
-      const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
+      const modal = await DayPilot.Modal.prompt("Create a new reservation:", "Event 1");
       dp.clearSelection();
       if (!modal.result) { return; }
       dp.events.add({
@@ -111,43 +113,35 @@ const Calendar = () => {
     }
   });
 
-    const events = [
-      {
-        id: 1,
-        text: "Event 1",
-        start: "2023-10-02T10:30:00",
-        end: "2023-10-02T13:00:00",
-        participants: 2,
-      },
-      {
-        id: 2,
-        text: "Event 2",
-        start: "2023-10-03T09:30:00",
-        end: "2023-10-03T11:30:00",
-        backColor: "#6aa84f",
-        participants: 1,
-      },
-      {
-        id: 3,
-        text: "Event 3",
-        start: "2023-10-03T12:00:00",
-        end: "2023-10-03T15:00:00",
-        backColor: "#f1c232",
-        participants: 3,
-      },
-      {
-        id: 4,
-        text: "Event 4",
-        start: "2023-10-01T11:30:00",
-        end: "2023-10-01T14:30:00",
-        backColor: "#cc4125",
-        participants: 4,
-      },
-    ];
+  useEffect(() => {
+    const startDate = "2023-12-04T00:00:00.000Z";
+    const endDate = "2023-12-11T00:00:00.000Z";
+    const response = axios.get(`/api/rooms/${roomId}/reservations?startDate=${startDate}&endDate=${new Date(
+      endDate
+    ).toISOString()}`).then(response => {
+      console.log(response.data);
+      const events = response.data.reservations.map((e) => {
+        return {
+          id: e.id,
+          text: e.status,
+          start: e.init_time,
+          end: e.end_time,
+          participants: 1,
+          status: e.status,
+          userId: e.userId,
+          roomId: e.roomId
+        }
+      });
+  
+      calendarRef.current.control.update({ startDate, events });
+    }).catch(err => {
+      console.log(err);
+    });
 
-    const startDate = "2023-10-02";
+    const events = [];
 
-    calendarRef.current.control.update({startDate, events});
+    calendarRef.current.control.update({ startDate, events });
+  }, []);
 
   return (
     <div style={styles.wrap}>
@@ -156,9 +150,9 @@ const Calendar = () => {
           selectMode={"Week"}
           showMonths={3}
           skipMonths={3}
-          startDate={"2023-10-02"}
-          selectionDay={"2023-10-02"}
-          onTimeRangeSelected={ args => {
+          startDate={"2023-12-04"}
+          selectionDay={"2023-12-04"}
+          onTimeRangeSelected={args => {
             calendarRef.current.control.update({
               startDate: args.day
             });
