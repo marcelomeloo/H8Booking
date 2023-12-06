@@ -18,7 +18,7 @@ export default function Home() {
           </h1>
           <p className="text-gray-600 mt-5">
             This is the inaugural MVP of ITA Booking, the ultimate platform to reserve
-            your favorite room in H8, ITA's students most beloved place!
+            your favorite room in H8, ITA students most beloved place!
           </p>
         </div>
         <div className="flex space-x-3">
