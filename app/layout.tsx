@@ -5,6 +5,9 @@ import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import AuthStatus from "@/components/auth-status";
 import { Suspense } from "react";
+import Byline from "@/components/byline";
+import { getServerSession } from "next-auth";
+import { GlobalNav } from "@/components/global-nav";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,16 +34,34 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession();
   return (
     <html lang="en">
-      <body className={inter.variable}>
-        <Toaster />
-        <Suspense fallback="Loading...">
-          {/* @ts-expect-error Async Server Component */}
-          <AuthStatus />
-        </Suspense>
-        {children}
-      </body>
+      {session ?
+        <body className={inter.variable}>
+          <GlobalNav />
+          <Toaster />
+          <Suspense fallback="Loading...">
+            <AuthStatus />
+          </Suspense>
+          <div className="bg-gray-50 max-w-full h-full lg:pl-72">
+            <div className="mx-auto space-y-8">
+              <div className="bg-vc-border-gradient p-px shadow-lg shadow-black/20">
+                <div className="bg-gray-50 p-3.5 lg:p-6">{children}</div>
+              </div>
+              <Byline className="fixed sm:hidden" />
+            </div>
+          </div>
+        </body> :
+        <body className={inter.variable}>
+          <Toaster />
+          <Suspense fallback="Loading...">
+            <AuthStatus />
+          </Suspense>
+          {children}
+        </body>
+
+      }
     </html>
   );
 }

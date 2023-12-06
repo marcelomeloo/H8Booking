@@ -1,13 +1,14 @@
 "use client";
 import { signOut } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function SignOut() {
   return (
     <button
-      className="text-stone-400 hover:text-stone-200 transition-all"
+      className="text-stone-800 font-bold hover:text-stone-500 w-full transition-all"
       onClick={() => signOut()}
     >
-      Goddammit, sign me out!
+      Sign me out
     </button>
   );
 }
