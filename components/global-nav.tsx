@@ -26,7 +26,7 @@ export function GlobalNav() {
           </div>
 
           <h3 className="font-semibold tracking-wide text-gray-800 group-hover:text-gray-500">
-            H8 Booking
+            ITA Booking
           </h3>
         </Link>
       </div>

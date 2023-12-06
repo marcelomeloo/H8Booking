@@ -14,8 +14,8 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const title = "H8 Booking";
-const description = "Welcome to H8 Booking, a place to book your favorite room!";
+const title = "ITA Booking";
+const description = "Welcome to ITA Booking, a place to book your favorite room!";
 
 export const metadata: Metadata = {
   title,

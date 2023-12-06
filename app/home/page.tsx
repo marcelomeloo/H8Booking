@@ -14,10 +14,10 @@ export default function Home() {
         />
         <div className="text-center max-w-screen-sm mb-10">
           <h1 className="text-gray-800 font-bold text-2xl">
-            Welcome to H8 Booking!
+            Welcome to ITA Booking!
           </h1>
           <p className="text-gray-600 mt-5">
-            This is the inaugural MVP of H8 Booking, the ultimate platform to reserve
+            This is the inaugural MVP of ITA Booking, the ultimate platform to reserve
             your favorite room in H8, ITA's students most beloved place!
           </p>
         </div>
