@@ -23,24 +23,25 @@ export default async function UserReservations() {
   const userReservations: UserReservations[] = JSON.parse(string).reservations;
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen w-full overflow-hidden">
-      <div className="flex flex-wrap gap-4">
-        {userReservations.filter(r => r.init_time > new Date().toISOString()).map((reservation: UserReservations) => (
-          <Link key={reservation.id} href={`/reservation/${reservation.id}`}>
-            <div className="flex-shrink-0 w-64 h-60 min-h-60 p-4 bg-white border rounded-md hover:shadow-md transition duration-300 block">
-              <div className="flex flex-col h-full justify-between">
-                <div>
-                  <h2 className="text-lg font-semibold mb-2 text-center">{reservation.room.name}</h2>
-                  <p className="text-gray-600 text-center">{reservation.room.description}</p>
-                </div>
-                <div className="flex items-center justify-center h-full">
-                  <p className="text-gray-600 text-center">{reservation.init_time.slice(0, 10)}</p>
-                </div>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
+    <div className="flex items-center justify-center h-screen w-full overflow-hidden">
+      <table className="min-w-full bg-white border rounded-md overflow-hidden text-center">
+        <thead>
+          <tr>
+            <th className="py-2 px-4 border-b">Room Name</th>
+            <th className="py-2 px-4 border-b">Description</th>
+            <th className="py-2 px-4 border-b">Reservation Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {userReservations.filter(r => r.init_time > new Date().toISOString()).map((reservation: UserReservations) => (
+            <tr key={reservation.id}>
+              <td className="py-2 px-4 border-b">{reservation.room.name}</td>
+              <td className="py-2 px-4 border-b">{reservation.room.description}</td>
+              <td className="py-2 px-4 border-b">{reservation.init_time.slice(0, 10)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
