@@ -36,6 +36,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
           const res = await axios.post("/api/auth/register", {
             email: e.currentTarget.email.value,
             password: e.currentTarget.password.value,
+            name: e.currentTarget.name.value
           }, {
             headers: { "Content-Type": "application/json" },
           }).catch(err => {
@@ -55,6 +56,23 @@ export default function Form({ type }: { type: "login" | "register" }) {
       }}
       className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
     >
+      {type === "register" ? (
+      <div>
+        <label
+          htmlFor="name"
+          className="block text-xs text-gray-600 uppercase"
+        >
+          Name
+        </label>
+        <input
+          id="name"
+          name="name"
+          type="name"
+          placeholder="Full name"
+          required
+          className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+        />
+      </div> ) : <></>}
       <div>
         <label
           htmlFor="email"
@@ -66,7 +84,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
           id="email"
           name="email"
           type="email"
-          placeholder="panic@thedis.co"
+          placeholder="student@ga.ita.br"
           autoComplete="email"
           required
           className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
@@ -83,6 +101,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
           id="password"
           name="password"
           type="password"
+          placeholder="********"
           required
           className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
         />
