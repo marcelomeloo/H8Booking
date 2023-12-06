@@ -123,7 +123,7 @@ const Calendar = (props: any) => {
       const events = response.data.reservations.map((e) => {
         return {
           id: e.id,
-          text: e.status,
+          text: "Reserved",
           start: e.init_time,
           end: e.end_time,
           participants: 1,
