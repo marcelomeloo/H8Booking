@@ -3,7 +3,6 @@ import prisma from "@/lib/prisma";
 import { RESERVATION_STATUS } from "@prisma/client";
 import { getServerSession } from "next-auth";
 
-
 export async function GET(
   req: NextRequest,
   context: { params: { id: string } }
@@ -39,7 +38,7 @@ export async function GET(
       roomId: id,
       status: RESERVATION_STATUS.APPROVED,
       init_time: { gte: new Date(startDate) },
-      end_time: { lte: new Date(endDate) }
+      end_time: { lte: new Date(endDate) },
     },
   });
 
@@ -61,7 +60,7 @@ export async function POST(
   const userId = body?.userId;
   const roomId = context.params.id;
 
-  if(!userId) {
+  if (!userId) {
     return NextResponse.json(
       { message: "Could not find user" },
       { status: 400 }
@@ -83,10 +82,7 @@ export async function POST(
   const endDate = body.endDate;
 
   if (!roomId) {
-    return NextResponse.json(
-      { message: "Missing room id" },
-      { status: 422 }
-    );
+    return NextResponse.json({ message: "Missing room id" }, { status: 422 });
   }
 
   if (!initDate || !endDate) {
@@ -116,7 +112,6 @@ export async function POST(
   return NextResponse.json({ reservation }, { status: 201 });
 }
 
-
 export async function PATCH(
   req: NextRequest,
   context: { params: { id: number } }
@@ -141,9 +136,9 @@ export async function PATCH(
   return NextResponse.json({ reservation }, { status: 200 });
 }
 
-
 function isISOString(str: string) {
   // Define a regular expression for ISO string format
-  const isoStringRegex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(\.\d{1,3})?)Z?$/;
+  const isoStringRegex =
+    /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(\.\d{1,3})?)Z?$/;
   return isoStringRegex.test(str);
 }

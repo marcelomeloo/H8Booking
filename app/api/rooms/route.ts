@@ -3,16 +3,16 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
-    const session = await getServerSession();
+    const email = req.nextUrl.searchParams.get("email");
 
-    if(!session?.user?.email) {
+
+    if(!email) {
         return NextResponse.json(
             { message: "Internal Server Error" },
             { status: 500 }
         )
     }
 
-    const email = session.user.email;
     const rooms = await prisma.rooms.findMany({ 
         where: {
             userRoomConfig: {
