@@ -30,7 +30,7 @@ model Reservations {
   init_time DateTime           @map("init_time_rsv")
   end_time  DateTime           @map("end_time_rsv")
   status    RESERVATION_STATUS @map("status_rsv")
-  user      Users              @relation(fields: [userId], references: [id])
+  user      Users              @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int                @map("id_usr")
   room      Rooms              @relation(fields: [roomId], references: [id])
   roomId    Int                @map("id_rms")
@@ -58,7 +58,7 @@ model Rooms {
 model UserRoomConfig {
   allowCreateReserve Boolean @map("allow_create_reserve")
   allowCancelReserve Boolean @map("allow_cancel_reserve")
-  user               Users   @relation(fields: [userId], references: [id])
+  user               Users   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId             Int     @map("id_usr")
   room               Rooms   @relation(fields: [roomId], references: [id])
   roomId             Int     @map("id_rms")

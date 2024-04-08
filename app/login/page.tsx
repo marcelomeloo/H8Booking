@@ -17,9 +17,9 @@ export default function Login() {
               height={20}
             />
           </Link>
-          <h3 className="text-xl font-semibold">Sign In</h3>
+          <h3 className="text-xl font-semibold">Welcome to H8 Booking</h3>
           <p className="text-sm text-gray-500">
-            Use your email and password to sign in
+            Use your email @ga.ita.br to sign in
           </p>
         </div>
         <Form type="login" />
