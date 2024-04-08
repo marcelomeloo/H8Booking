@@ -1,3 +1,5 @@
+"use client";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -39,12 +41,12 @@ export default function Home() {
             Our GitHub Repo
           </a>
           <p className="text-black">·</p>
-          <a
-            href="/"
+          <button
             className="text-gray-600 underline hover:text-gray-800 transition-all"
+            onClick={() => signOut()}
           >
             Login
-          </a>
+          </button>
         </div>
       </div>
     </div>
