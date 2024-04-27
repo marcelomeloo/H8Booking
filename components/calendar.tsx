@@ -19,6 +19,19 @@ const Calendar = (props: any) => {
   const calendarRef = useRef()
   const roomId = props.id;
 
+  // StartDate and EndDate variables
+  // Calcula o início da semana
+  const today = new Date();
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - today.getDay());
+
+  // Calcula o fim da semana
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+  const startDate = startOfWeek.toISOString();
+  const endDate = endOfWeek.toISOString();
+
   const editEvent = async (e) => {
     const dp = calendarRef.current.control;
     const modal = await DayPilot.Modal.prompt("Update event text:", e.text());
@@ -114,8 +127,17 @@ const Calendar = (props: any) => {
   });
 
   useEffect(() => {
-    const startDate = "2023-12-04T00:00:00.000Z";
-    const endDate = "2023-12-11T00:00:00.000Z";
+    // Calcula o início da semana
+    const today = new Date();
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - today.getDay());
+
+    // Calcula o fim da semana
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+    const startDate = startOfWeek.toISOString();
+    const endDate = endOfWeek.toISOString();
     const response = axios.get(`/api/rooms/${roomId}/reservations?startDate=${startDate}&endDate=${new Date(
       endDate
     ).toISOString()}`).then(response => {
@@ -132,7 +154,7 @@ const Calendar = (props: any) => {
           roomId: e.roomId
         }
       });
-  
+
       calendarRef.current.control.update({ startDate, events });
     }).catch(err => {
       console.log(err);
@@ -150,8 +172,8 @@ const Calendar = (props: any) => {
           selectMode={"Week"}
           showMonths={3}
           skipMonths={3}
-          startDate={"2023-12-04"}
-          selectionDay={"2023-12-04"}
+          startDate={startDate.slice(0, 10)}
+          selectionDay={startDate.slice(0, 10)}
           onTimeRangeSelected={args => {
             calendarRef.current.control.update({
               startDate: args.day
