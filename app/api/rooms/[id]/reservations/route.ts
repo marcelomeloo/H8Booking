@@ -3,6 +3,45 @@ import prisma from "@/lib/prisma";
 import { RESERVATION_STATUS } from "@prisma/client";
 import { getServerSession } from "next-auth";
 
+/**
+ * @swagger
+ * tags:
+ *   - name: Reservations
+ *     description: Operations related to room reservations.
+ * 
+ * /api/rooms/{id}/reservations:
+ *   get:
+ *     tags:
+ *       - Reservations
+ *     summary: Get reservations for a room within a specific time range.
+ *     description: Retrieves a list of approved reservations for the specified room within the provided date range.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the room.
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: startDate
+ *         required: true
+ *         description: The start date of the time range for reservations.
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *       - in: query
+ *         name: endDate
+ *         required: true
+ *         description: The end date of the time range for reservations.
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *     responses:
+ *      200:
+ *       description: Successful response
+ */
+
+
 export async function GET(
   req: NextRequest,
   context: { params: { id: string } }

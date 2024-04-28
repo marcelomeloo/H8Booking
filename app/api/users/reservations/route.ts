@@ -2,6 +2,29 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+/**
+ * @swagger
+ * /api/users/reservations:
+ *   get:
+ *     tags:
+ *     - Reservations
+ *     summary: Retrieves a list of reservations by user email.
+ *     description: This endpoint retrieves all reservations for a given user, identified by their email.
+ *     parameters:
+ *       - in: query
+ *         name: email
+ *         required: true
+ *         description: The email of the user to retrieve reservations for.
+ *         schema:
+ *           type: string
+ *           format: email
+ *     responses:
+ *      200:
+ *       description: Successful response
+ *     
+ */
+
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
     const email = req.nextUrl.searchParams.get("email");
 

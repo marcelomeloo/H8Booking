@@ -2,6 +2,49 @@ import prisma from "@/lib/prisma";
 import { hash } from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
 
+/**
+ * @swagger
+ * tags:
+ *   - name: Authentication
+ *     description: User authentication and management
+ *
+ * /api/users/register:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     summary: Register a new user
+ *     description: Creates a new user with minimal role and sets up user room configuration for all rooms.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *               - name
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Email address of the user
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 description: Password for the user account
+ *               name:
+ *                 type: string
+ *                 description: Full name of the user
+ *     responses:
+ *       201:
+ *         description: User created successfully
+ *       400:
+ *         description: User already exists
+ *       500:
+ *         description: Internal server error
+ */
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const { email, password, name } = await req.json();
