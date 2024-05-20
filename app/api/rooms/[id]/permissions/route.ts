@@ -4,26 +4,27 @@ import { Prisma } from "@prisma/client";
 
 /**
  * @swagger
+ * 
  * /api/rooms/{id}/permissions:
- * get:
- *  tags:
- *   - Rooms
- *  summary: Retrieves a list of users with permissions on a room.
- *  description: This endpoint returns all users with permissions on a room.
- *  parameters:
- *    - in: path
- *      name: id
- *      required: true
- *      description: The id of the room to find permissions for.
- *      schema:
- *        type: integer
- *      responses:
- *        200:
- *          description: Successful response
- *        404:
- *          description: Room not found
- *        500:
- *          description: Internal Server Error
+ *   get:
+ *     tags:
+ *      - Rooms
+ *     summary: Retrieves a list of users with permissions on a room.
+ *     description: This endpoint returns all users with permissions on a room.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The id of the room to find permissions for.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *      200:
+ *       description: Successful response
+ *      404:
+ *       description: Room not found
+ *      500:
+ *       description: Internal Server Error
  *
  */
 
