@@ -41,8 +41,6 @@ export default async function RoomPermissions() {
                         //   method: "PATCH",
                         //   headers: { "Content-Type": "application/json" },
                         //   body: JSON.stringify({
-                        //     // email: config.email,
-                        //     canCreate: e.target.checked,
                         //   }),
                         // });
                       }}
@@ -58,8 +56,6 @@ export default async function RoomPermissions() {
                         //   method: "PATCH",
                         //   headers: { "Content-Type": "application/json" },
                         //   body: JSON.stringify({
-                        //     // email: config.email,
-                        //     canCancel: e.target.checked,
                         //   }),
                         // });
                       }}
