@@ -30,7 +30,7 @@ export const demos: { name: string; items: Item[] }[] = [
     items: [
       {
         name: "Manage Permissions",
-        slug: "permissions",
+        slug: "permissions/rooms",
         description: "Manage user permissions on rooms",
       },
       {

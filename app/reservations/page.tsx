@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import getUserReservations from '@/lib/getUserReservations';
 
