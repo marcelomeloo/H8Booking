@@ -6,11 +6,31 @@ import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import { MenuAlt2 } from 'heroicons-react';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Byline from '@/components/byline';
+import { UserGETResponse } from '@/app/api/users/[email]/route';
+import { getServerSession } from 'next-auth';
 
 export function GlobalNav() {
   const [isOpen, setIsOpen] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchUserRole() {
+      try {
+        const session = await getServerSession();
+        const email = session?.user?.email;
+        const response = await fetch(`${process.env.BASE_URL}/api/users/${email}`);
+        const data: UserGETResponse = await response.json();
+        setUserRole(data.role);
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+      }
+    }
+
+    fetchUserRole();
+  }, []);
+
   const close = () => setIsOpen(false);
 
   return (
@@ -55,19 +75,20 @@ export function GlobalNav() {
       >
         <nav className="space-y-6 px-2 pb-24 pt-5">
           {demos.map((section) => (
-            <div key={section.name}>
-              <div className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-800/80">
-                <div>{section.name}</div>
-              </div>
+            (section.name !== 'Admin Session' || userRole === 'ADMIN') && (
+              <div key={section.name}>
+                <div className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-800/80">
+                  <div>{section.name}</div>
+                </div>
 
-              <div className="space-y-1">
-                {section.items.map((item) => (
-                  <GlobalNavItem key={item.slug} item={item} close={close} />
-                ))}
+                <div className="space-y-1">
+                  {section.items.map((item) => (
+                    <GlobalNavItem key={item.slug} item={item} close={close} />
+                  ))}
+                </div>
               </div>
-            </div>
-          )
-          )}
+            )
+          ))}
         </nav>
         <Byline className="absolute hidden sm:block" />
       </div>
