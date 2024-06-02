@@ -37,9 +37,43 @@ import { getServerSession } from "next-auth";
  *           type: string
  *           format: date-time
  *     responses:
- *      200:
- *       description: Successful response
+ *       200:
+ *         description: Successful response
+ *
+ *   patch:
+ *     tags:
+ *       - Reservations
+ *     summary: Update the status of a reservation.
+ *     description: Updates the status of a reservation for the specified room.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the room.
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *             properties:
+ *               id:
+ *                 type: integer
+ *                 description: The unique identifier of the reservation.
+ *               status:
+ *                 type: string
+ *                 description: The new status of the reservation.
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *       400:
+ *         description: Bad request
  */
+
 
 
 export async function GET(
@@ -160,6 +194,8 @@ export async function PATCH(
 
   const reservationId = body.id;
 
+  const status = body.status === "APPROVED" ? RESERVATION_STATUS.APPROVED : RESERVATION_STATUS.CANCELED;
+
   if (!roomId || !reservationId) {
     return NextResponse.json(
       { message: "Missing important information" },
@@ -169,11 +205,12 @@ export async function PATCH(
 
   const reservation = await prisma.reservations.update({
     where: { id: Number(reservationId) },
-    data: { status: RESERVATION_STATUS.CANCELED },
+    data: { status: status },
   });
 
   return NextResponse.json({ reservation }, { status: 200 });
 }
+
 
 function isISOString(str: string) {
   // Define a regular expression for ISO string format
