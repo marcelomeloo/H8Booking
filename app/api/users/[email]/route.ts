@@ -16,7 +16,7 @@ import prisma from "@/lib/prisma";
  *         required: true
  *         description: The unique email of the user.
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Successful response
