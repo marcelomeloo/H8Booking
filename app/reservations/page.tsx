@@ -29,6 +29,7 @@ export default async function UserReservations() {
             <th className="py-2 px-4 border-b">Room Name</th>
             <th className="py-2 px-4 border-b">Description</th>
             <th className="py-2 px-4 border-b">Reservation Date</th>
+            <th className="py-2 px-4 border-b"></th>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +38,11 @@ export default async function UserReservations() {
               <td className="py-2 px-4 border-b">{reservation.room.name}</td>
               <td className="py-2 px-4 border-b">{reservation.room.description}</td>
               <td className="py-2 px-4 border-b">{reservation.init_time.slice(0, 10)}</td>
+              <td className="py-2 px-4 border-b">
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  Cancel
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
