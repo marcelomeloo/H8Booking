@@ -118,7 +118,7 @@ export async function GET(
 }
 
 export type ReservationRequestBodyPOST = {
-  userId: number | null;
+  email: string | null;
   initDate: string | null;
   endDate: string | null;
 };
@@ -129,15 +129,28 @@ export async function POST(
 ): Promise<NextResponse> {
   const body: ReservationRequestBodyPOST = await req.json();
 
-  const userId = body?.userId;
+  const email = body?.email;
   const roomId = context.params.id;
 
-  if (!userId) {
+  if (!email) {
     return NextResponse.json(
-      { message: "Could not find user" },
+      { message: "Email must be provided" },
       { status: 400 }
     );
   }
+
+  const user = await prisma.users.findUnique({
+    where: { email },
+  });
+
+  if (!user) {
+    return NextResponse.json(
+      { message: "User not found" },
+      { status: 404 }
+    );
+  }
+
+  const userId = user.id;
 
   const permissions = await prisma.userRoomConfig.findUnique({
     where: { userId_roomId: { userId, roomId: parseInt(context.params.id) } },

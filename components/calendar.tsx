@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { DayPilot, DayPilotCalendar, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
 import "./calendar.css";
 import axios from 'axios';
+import createReservation from '@/lib/postReservation';
+import { sendReservationEmail } from '@/lib/sendEmail';
 
 const styles = {
   wrap: {
@@ -18,6 +20,7 @@ const styles = {
 const Calendar = (props: any) => {
   const calendarRef = useRef()
   const roomId = props.id;
+  const email = props.email;
 
   // StartDate and EndDate variables
   // Calcula o início da semana
@@ -46,7 +49,7 @@ const Calendar = (props: any) => {
     timeRangeSelectedHandling: "Enabled",
     onTimeRangeSelected: async args => {
       const dp = calendarRef.current.control;
-      const modal = await DayPilot.Modal.prompt("Create a new reservation:", "Event 1");
+      const modal = await DayPilot.Modal.prompt("Create a new reservation:", "Event");
       dp.clearSelection();
       if (!modal.result) { return; }
       dp.events.add({
@@ -58,6 +61,20 @@ const Calendar = (props: any) => {
     },
     onEventClick: async args => {
       await editEvent(args.e);
+      const startDate: string = args.e.part.start.value;
+      const endDate: string = args.e.part.end.value;
+
+      await createReservation(roomId, email, new Date(startDate), new Date(endDate));
+      const emailDetails = {
+        userName: email,
+        userEmail: email,
+        room: roomId,
+        // date should have the time and the date
+        date: `${new Date(startDate).toLocaleDateString()} (${startDate.split('T')[1]}) - ${new Date(endDate).toLocaleDateString()} (${endDate.split('T')[1]})`
+      }
+      await sendReservationEmail(emailDetails).catch(err => {
+        console.log(err);
+      });
     },
     contextMenu: new DayPilot.Menu({
       items: [
@@ -86,7 +103,7 @@ const Calendar = (props: any) => {
           right: 3,
           width: 20,
           height: 20,
-          symbol: "icons/daypilot.svg#minichevron-down-2",
+          symbol:  `https://picsum.photos/24/24?random=${1}`,
           fontColor: "#fff",
           toolTip: "Show context menu",
           action: "ContextMenu",
@@ -96,7 +113,7 @@ const Calendar = (props: any) => {
           right: 25,
           width: 20,
           height: 20,
-          symbol: "icons/daypilot.svg#x-circle",
+          symbol:  `https://picsum.photos/24/24?random=${2}`,
           fontColor: "#fff",
           action: "None",
           toolTip: "Delete event",
@@ -141,7 +158,6 @@ const Calendar = (props: any) => {
     const response = axios.get(`/api/rooms/${roomId}/reservations?startDate=${startDate}&endDate=${new Date(
       endDate
     ).toISOString()}`).then(response => {
-      console.log(response.data);
       const events = response.data.reservations.map((e) => {
         return {
           id: e.id,
